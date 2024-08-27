@@ -40,7 +40,7 @@ def auth(username:str,password:str):
         
         return seq_kk_token,ua,cookies
 
-def check_date(user_data):
+def send(body,user_data):
     token,ua,cookies = auth(user_data["username"],user_data["password"])
     
     headers = {
@@ -49,47 +49,11 @@ def check_date(user_data):
         "Cookie": cookies,
         "Referer": "https://srv-gg.ru/booking-process"
     }
-    print(headers)
-    body = {"mappId": "2e6dafae-8d48-4176-8cdf-cfaf79627c75"}
+    
+    resp = requests.post(url="https://srv-gg.ru/api/bookings",json=body,headers=headers)
+    # resp = requests.get(url="https://srv-gg.ru/api/captcha",headers=headers)
 
-    file_name = "data/dates.json"
-    for i in range(400000000):
-        resp = requests.post("https://srv-gg.ru/api/booking_slots", json=body,headers=headers)
-        try:
-            if resp.json().get("error") == "token parse with claims failed":
-                token,ua,cookies = auth()
-                headers = {
-                "Authorization": "Bearer " + token,
-                "User-Agent": ua,
-                "Cookie": cookies,
-                "Referer": "https://srv-gg.ru/booking-process"
-                }
-                continue
-            else:
-                dates = resp.json().get("data")
-
-                for date in dates:
-                    if date["count"] != 0:
-                        print(str(date["time"]), date["count"])
-                        parse.booking(str(date["time"]),user_data)
-                        time.sleep(100000)
-                        try:
-                            with open(file_name, "r", encoding="utf-8") as file:
-                                data = json.load()
-                        except (FileNotFoundError, json.JSONDecodeError):
-                            data = []
-                        if not any(item["time"] == date["time"] and item["count"] == date["count"] for item in data):
-                            data.append(date)
-                            with open(file_name, "w") as file:
-                                json.dump(data,file,ensure_ascii=False, indent=4)
-            
-            print(i)
-            time.sleep(1.7)
-
-        except requests.exceptions.JSONDecodeError as e:
-            print(resp.text)
-            print(resp.json())
-            print("Ошибка:", e)
+    print(resp.text)
 
 
 if __name__ == "__main__":
@@ -107,5 +71,36 @@ if __name__ == "__main__":
         "target_trunk": "",
         "target_mapp": "МАПП Забайкальск"
     }
-    check_date(user_data)
+    body = {
+        "load_type": "loaded",
+        "transportation_type": "transit",
+        "driver": {
+            "email": "batom***mail.ru",
+            "phone": "+79141248157"
+        },
+        "car": {
+            "1": {
+                "id": "9c7fc202-52d7-4e85-b573-9f42c48b0fbb",
+                "type_name": "Truck",
+                "name": "FREIGHTLINER",
+                "model": "FLC120",
+                "grnz": "O498BX75",
+                "file_uuid": "d7dc11c6-1605-4332-9490-4b4c3f49da2b"
+            },
+            "2": {
+                "id": "1a2e16e0-47cb-47f9-ba8a-e905c708845d",
+                "type_name": "Trailer",
+                "grnz": "AE069775",
+                "file_uuid": "01e1bb33-fb96-41f6-ab4b-3994ed0e461b"
+            }
+        },
+        "time_slot": "2024-09-05T08:00:00Z",
+        "bph": 13,
+        "mapp_id": "2e6dafae-8d48-4176-8cdf-cfaf79627c75",
+        "lang": "RU",
+        "is_kiosk": False,
+        "captcha_id": "7EjGCFK6MaJ40tN932oD",
+        "captcha_input": "273041"
+    }
+    send(body,user_data)
 

@@ -141,7 +141,7 @@ def booking(target_date, user_data:dict):
 
         slots = WebDriverWait(driver,10).until(expected_conditions.presence_of_all_elements_located((By.CLASS_NAME,"time-block-item.py-2.px-2.d-flex.flex-column.align-items-center.rounded-1")))
         book_btn = WebDriverWait(driver, 10).until(expected_conditions.presence_of_element_located((By.CSS_SELECTOR, "#root > div > div.bg-body.d-flex.flex-column.header-offset.px-1 > div > div > div > div > button")))
-
+    
         for slot in slots:
             time_slot = slot.text.split("Д")
             hint = slot.find_element(By.CLASS_NAME,"hint")
