@@ -7,7 +7,7 @@ from selenium.webdriver.edge.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-import parse
+import parse,book_request
 
 def auth(username:str,password:str):
 
@@ -49,7 +49,7 @@ def check_date(user_data):
         "Cookie": cookies,
         "Referer": "https://srv-gg.ru/booking-process"
     }
-    print(headers)
+
     body = {"mappId": "2e6dafae-8d48-4176-8cdf-cfaf79627c75"}
 
     file_name = "data/dates.json"
@@ -66,12 +66,13 @@ def check_date(user_data):
                 }
                 continue
             else:
+                
                 dates = resp.json().get("data")
 
                 for date in dates:
                     if date["count"] != 0:
                         print(str(date["time"]), date["count"])
-                        parse.booking(str(date["time"]),user_data)
+                        book_request.send(user_data,date,headers)
                         time.sleep(100000)
                         try:
                             with open(file_name, "r", encoding="utf-8") as file:
@@ -84,12 +85,13 @@ def check_date(user_data):
                                 json.dump(data,file,ensure_ascii=False, indent=4)
             
             print(i)
-            time.sleep(1.7)
+            time.sleep(2)
 
         except requests.exceptions.JSONDecodeError as e:
             print(resp.text)
-            print(resp.json())
+            # print(resp.json())
             print("Ошибка:", e)
+            break
 
 
 if __name__ == "__main__":
@@ -101,11 +103,14 @@ if __name__ == "__main__":
     #     "target_mapp": "МАПП Забайкальск"
     # }
     user_data = {
-        "username": "larisa.tsyrenowa@yandex.ru",
-        "password": "1tW&uZez3hqG",
-        "target_truck": "Freightliner Freightliner O415BX75",
-        "target_trunk": "",
-        "target_mapp": "МАПП Забайкальск"
-    }
+                    "username": "larisa.tsyrenowa@yandex.ru",
+                    "password": "1tW&uZez3hqG",
+                    "target_truck": "O481EB75",
+                    "target_trunk": "AB381003",
+                    "driver":{
+                        "email": "larisa.tsyrenowa@yandex.ru",
+                        "phone": "89145045696"
+                    }
+                }
     check_date(user_data)
 

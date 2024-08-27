@@ -73,7 +73,7 @@ def auth(username:str,password:str):
         
         return seq_kk_token,ua,cookies
 
-def get_captcha(headers):
+def get_captcha_by_rucaptcha(headers):
     resp = requests.get(url="https://srv-gg.ru/api/captcha",headers=headers)
     result = solve_captcha(resp.json().get("captcha"))
 
@@ -82,15 +82,23 @@ def get_captcha(headers):
 
     return captcha
 
+def get_captcha_from_storage():
+    with open("data/captchas.json", "r", encoding="utf-8") as file:
+        captchas = json.load(file)
+    captcha = captchas[0]
+    with open("data/captchas.json", "w") as file:
+        json.dump(captchas[1:],file,ensure_ascii=False,indent=4)
+    return captcha
+
 def formate_body(target_truck,target_trunk,driver,date,captcha):
     book_body = body
-    book_body["car"]["1"]["id"] = target_truck.get("id", "")
+    book_body["car"]["1"]["id"] = target_truck.get("car_id", "")
     book_body["car"]["1"]["name"] = target_truck.get("name", "")
     book_body["car"]["1"]["model"] = target_truck.get("model", "")
     book_body["car"]["1"]["grnz"] = target_truck.get("grnz", "")
     book_body["car"]["1"]["file_uuid"] = target_truck.get("document_uuid", "")
 
-    book_body["car"]["2"]["id"] = target_trunk.get("id", "")
+    book_body["car"]["2"]["id"] = target_trunk.get("car_id", "")
     book_body["car"]["2"]["grnz"] = target_trunk.get("grnz", "")
     book_body["car"]["2"]["file_uuid"] = target_trunk.get("document_uuid", "")
 
@@ -118,40 +126,20 @@ def get_car(grnz,headers,url):
     
     raise Exception("Не найдена машина")
 
-    
-
-def send(user_data):
-    token,ua,cookies = auth(user_data["username"],user_data["password"])
-    
-    request_headers = {
-        "Authorization": "Bearer " + token,
-        "User-Agent": ua,
-        "Cookie": cookies,
-        "Referer": "https://srv-gg.ru/booking-process"
-    }
-
-    date = {
-            "time": "2024-07-05T11:00:00Z",
-            "count": 0,
-            "bph": 12
-    }
+def send(user_data,date,request_headers):
 
     target_truck = get_car(user_data["target_truck"],request_headers,url="https://srv-gg.ru/api/cars?page=1&limit=100&car_type=1&is_booking_available=true&validation_statuses=2")
     target_trunk = get_car(user_data["target_trunk"],request_headers,url="https://srv-gg.ru/api/cars?page=1&limit=100&car_type=2&is_booking_available=true&validation_statuses=2")
-    captcha = get_captcha(request_headers)
+    # captcha = get_captcha(request_headers)
+    captcha = get_captcha_from_storage()
     request_body = formate_body(target_truck,target_trunk,driver=user_data["driver"],date=date,captcha=captcha)
     
-    
-    
-    
-
-   
     print(request_body)
+    print(captcha)
     resp = requests.post(url="https://srv-gg.ru/api/bookings",json=request_body,headers=request_headers)
-    # resp = requests.get(url="https://srv-gg.ru/api/captcha",headers=headers)
+
 
     print(resp.text)
-
 
 if __name__ == "__main__":
     # user_data = {
@@ -165,12 +153,26 @@ if __name__ == "__main__":
         "username": "larisa.tsyrenowa@yandex.ru",
         "password": "1tW&uZez3hqG",
         "target_truck": "O481EB75",
-        "target_trunk": "AE069775",
+        "target_trunk": "AB381003",
         "driver":{
             "email": "larisa.tsyrenowa@yandex.ru",
             "phone": "89145045696"
         }
     }
+    date = {
+            "time": "2024-07-05T11:00:00Z",
+            "count": 0,
+            "bph": 12
+    }
+
+    token,ua,cookies = auth(user_data["username"],user_data["password"])
     
-    send(user_data)
+    request_headers = {
+        "Authorization": "Bearer " + token,
+        "User-Agent": ua,
+        "Cookie": cookies,
+        "Referer": "https://srv-gg.ru/booking-process"
+    }
+
+    send(user_data,date,request_headers)
 

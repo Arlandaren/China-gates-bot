@@ -3,8 +3,9 @@ import cv2,base64,time
 from PIL import Image, ImageEnhance, ImageFilter
 from io import BytesIO
 import numpy as np
+import os
 
-api_key = "16b39a09902b7fa0f7b7c699a0dfce6b"
+api_key = os.getenv("captcha_api")
 
 def process_img(base64_str):
     if base64_str.startswith('data:image'):
@@ -18,7 +19,6 @@ def process_img(base64_str):
     enhancer = ImageEnhance.Contrast(image)
     image = enhancer.enhance(1900)
 
-    # image = image.filter(ImageFilter.MedianFilter())
 
     temp_image_io = BytesIO()
     image.save(temp_image_io, format='PNG')

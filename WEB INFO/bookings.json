@@ -1,0 +1,109 @@
+[{
+    "load_type": "loaded",
+    "transportation_type": "transit",
+    "driver": {
+        "email": "batom***mail.ru",
+        "phone": "+79141248157"
+    },
+    "car": {
+        "1": {
+            "id": "9c7fc202-52d7-4e85-b573-9f42c48b0fbb",
+            "type_name": "Truck",
+            "name": "FREIGHTLINER",
+            "model": "FLC120",
+            "grnz": "O498BX75",
+            "file_uuid": "d7dc11c6-1605-4332-9490-4b4c3f49da2b"
+        },
+        "2": {
+            "id": "1a2e16e0-47cb-47f9-ba8a-e905c708845d",
+            "type_name": "Trailer",
+            "grnz": "AE069775",
+            "file_uuid": "01e1bb33-fb96-41f6-ab4b-3994ed0e461b"
+        }
+    },
+    "time_slot": "2024-09-05T08:00:00Z",
+    "bph": 13,
+    "mapp_id": "2e6dafae-8d48-4176-8cdf-cfaf79627c75",
+    "lang": "RU",
+    "is_kiosk": false,
+    "captcha_id": "dHosKMRk90OMG1Jn0KjN",
+    "captcha_input": "995576"
+},
+
+{
+    "id": "ef9a8c9a-6467-11ef-8b80-55d8e9c31d43",
+    "driver": {
+      "email": "batom***mail.ru",
+      "phone": "+79141248157"
+    },
+    "number": "",
+    "status": "active",
+    "created_at": "2024-08-27T11:31:43.609677054Z",
+    "cars": {
+      "1": {
+        "id": "a87476df-f4b2-4fa6-8fc2-6749ee9889bc",
+        "type_name": "Truck",
+        "type_name_eng": "",
+        "name": "ВОЛЬВО",
+        "grnz": "O311MK03",
+        "model": "VOLVO",
+        "file_uuid": "86652a4b-96b1-43f2-b7ff-0df912eabd5d",
+        "file_name": ""
+      },
+      "2": {
+        "id": "405bc0d3-835e-45e6-8b91-a23c477fda84",
+        "type_name": "Trailer",
+        "type_name_eng": "",
+        "name": "",
+        "grnz": "AM971275",
+        "model": "",
+        "file_uuid": "6d7331ff-7bf6-49cc-bb34-46c2c9608fbe",
+        "file_name": ""
+      }
+    },
+    "time_slot": "2024-09-08 02:00:00.000000 Z",
+    "mapp": {
+      "id": "2e6dafae-8d48-4176-8cdf-cfaf79627c75",
+      "name": "МАПП Забайкальск",
+      "address": "Забайкальский край, пгт. Забайкальск, МАПП Забайкальск",
+      "name_eng": "APP Zabaikalsk",
+      "address_eng": "Zabaikalsk region, Zabaikalsk urban-type settlement, Zabaikalsk IACP",
+      "scheme_uuid": "",
+      "booking_days": 0
+    }
+  },
+
+
+{
+    "load_type": "loaded",
+    "transportation_type": "transit",
+    "driver": {
+      "email": "batom***mail.ru",
+      "phone": "+79141248157"
+    },
+    "car": {
+      "1": {
+        "id": "a87476df-f4b2-4fa6-8fc2-6749ee9889bc",
+        "type_name": "Truck",
+        "name": "ВОЛЬВО",
+        "model": "VOLVO",
+        "grnz": "O311MK03",
+        "file_uuid": "86652a4b-96b1-43f2-b7ff-0df912eabd5d"
+      },
+      "2": {
+        "id": "405bc0d3-835e-45e6-8b91-a23c477fda84",
+        "type_name": "Trailer",
+        "grnz": "AM971275",
+        "file_uuid": "6d7331ff-7bf6-49cc-bb34-46c2c9608fbe"
+      }
+    },
+    "time_slot": "2024-09-08T02:00:00Z",
+    "bph": 13,
+    "mapp_id": "2e6dafae-8d48-4176-8cdf-cfaf79627c75",
+    "lang": "RU",
+    "is_kiosk": false,
+    "captcha_id": "f6TojAcbet7XCMmCRAsD",
+    "captcha_input": "889358"
+  }]
+
+  
