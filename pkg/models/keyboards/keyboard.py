@@ -11,7 +11,8 @@ def to_web_app():
 
 def menu(user_id):
     kb = InlineKeyboardBuilder()
-    kb.button(text="Забронировать", callback_data=f"booking_{user_id}")
+    kb.button(text="Забронировать", callback_data=f"booking")
+    kb.button(text="Профиль", callback_data=f"profile_menu")
 
     return kb.as_markup()
 
@@ -26,3 +27,17 @@ def catalogue():
     kb.button(text="1 бронирование - 1500рублей", callback_data="buy_oneBooking")
 
     return kb.as_markup()
+
+def profile_menu():
+    kb = InlineKeyboardBuilder()
+    kb.button(text="Пополнить баланс", callback_data="payment_menu")
+    kb.button(text="Бронирования", callback_data="orders_menu")
+
+    return kb.as_markup()
+
+def booking_button():
+    kb = InlineKeyboardBuilder()
+    kb.button(text="Заказать бронь", callback_data=f"booking")
+
+    return kb.as_markup()
+    
