@@ -14,3 +14,15 @@ def menu(user_id):
     kb.button(text="Забронировать", callback_data=f"booking_{user_id}")
 
     return kb.as_markup()
+
+def to_payment():
+    kb = InlineKeyboardBuilder()
+    kb.button(text="Пополнить баланс", callback_data="payment_menu")
+
+    return kb.as_markup()
+
+def catalogue():
+    kb = InlineKeyboardBuilder()
+    kb.button(text="1 бронирование - 1500рублей", callback_data="buy_oneBooking")
+
+    return kb.as_markup()

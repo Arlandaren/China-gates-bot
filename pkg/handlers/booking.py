@@ -1,7 +1,7 @@
 from aiogram import Router,F
 from aiogram.types import Message,CallbackQuery
 from ..models.repository.postgre import DB
-from ..models.keyboards.keyboard import to_web_app
+from ..models.keyboards.keyboard import to_web_app,to_payment
 
 r = Router()
 
@@ -11,6 +11,6 @@ async def booking(cb:CallbackQuery):
     user = await DB.get_user(user_id)
 
     if user["balance"] > 0:
-        await cb.answer("Чтобы начать нажмите на кнопку", reply_markup=to_web_app())
+        await cb.message.answer("Чтобы начать нажмите на кнопку", reply_markup=to_web_app())
     else:
-        cb.message.answer("Чтобы продолжить пополните баланс")
+        await cb.message.answer("Чтобы продолжить - пополните баланс", reply_markup=to_payment())

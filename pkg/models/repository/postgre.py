@@ -41,7 +41,7 @@ class Database:
                 return False
     async def check_user(self,id) -> bool:
         async with self.pool.acquire() as c:
-            result = await c.fetchval(f"SELECT * FROM users WHERE id = {id} LIMIT 1")
+            result = await c.fetchval(f"SELECT * FROM users WHERE id = $1 LIMIT 1", id)
             if result:
                 return True
             else:
@@ -56,5 +56,37 @@ class Database:
             except Exception as err:
                 print(err)
                 return None
+    async def increase_balance_user(self, amount: int, user_id: int) -> bool:
+        async with self.pool.acquire() as c:
+            try:
+                await c.execute(
+                    "UPDATE users SET balance = balance + $1 WHERE id = $2",
+                    amount, user_id
+                )
+                return True
+            except Exception as err:
+
+                print("Ошибка при обновлении баланса пользователя:", err)
+                return False
+    async def decrease_balance_user(self, amount: int, user_id: int) -> bool:
+        async with self.pool.acquire() as c:
+            try:
+                await c.execute(
+                    "UPDATE users SET balance = balance - $1 WHERE id = $2",
+                    amount, user_id
+                )
+                return True
+            except Exception as err:
+
+                print("Ошибка при обновлении баланса пользователя:", err)
+                return False
+    async def create_order(self,login,password,truck_grnz,trunk_grnz,driver_email,driver_phone):
+        async with self.pool.acquire() as c:
+            try:
+                await c.execute("INSERT INTO orders (login,password,truck_grnz,trunk_grnz,driver_email,driver_phone) VALUES ($1,$2,$3,$4,$5,$6)", login,password,truck_grnz,trunk_grnz,driver_email,driver_phone)
+                return True
+            except Exception as err:
+                print("Ошибка при создании заказа:", err)
+                return False
             
 DB = Database()
